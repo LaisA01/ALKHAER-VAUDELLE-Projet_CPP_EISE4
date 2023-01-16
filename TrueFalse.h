@@ -1,12 +1,4 @@
 #pragma once
-#include <iostream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
 #include "question.h"
 
 using std::string; using std::pair; using std::vector;
@@ -14,7 +6,7 @@ using std::string; using std::pair; using std::vector;
 class TrueFalse : public Question
 {
 private:
-    bool answer;          //l'indice de la réponse correcte
+    bool answer;          //la réponse correcte
     
 public:   
     TrueFalse(string name, string text, int points, int nb_choices, vector<string> choices, int i_answer):

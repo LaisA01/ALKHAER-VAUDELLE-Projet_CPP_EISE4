@@ -1,12 +1,4 @@
 #pragma once
-#include <iostream>
-#include <string>
-#include <vector>
-#include <utility>
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/Network.hpp>
 #include "question.h"
 
 using std::string; using std::pair; using std::vector;
