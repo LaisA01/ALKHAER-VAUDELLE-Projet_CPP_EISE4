@@ -14,4 +14,13 @@ private:
     void initVariables();
     void initWindow();
 
+public:
+
+    const bool running() const;
+    Game();
+    ~Game();
+    void pollEvents();
+    void Game::update();
+    void Game::render();
+
 }
