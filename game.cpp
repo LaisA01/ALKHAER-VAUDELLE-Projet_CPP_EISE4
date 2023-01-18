@@ -1,4 +1,5 @@
 #include "game.h"
+#include "button.hpp"
 
 using std::string; using std::pair; using std::vector;
 
@@ -14,6 +15,9 @@ void Game::initWindow(void)
     this->window = new sf::RenderWindow(this->VM, "Test", sf::Style::Default);
     this->window->setFramerateLimit(30);
     this->window->clear(sf::Color(31,100,32, 125));
+	//Button test_button("test", {100,100});
+
+	//this->window->draw(test_button)
 
     this->window->display();
 

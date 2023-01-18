@@ -14,7 +14,7 @@ private:
     float _y_pos;           //ordonnée du coin en haut à droite du bouton
     
 
-    virtual void draw(sf::RenderTarger& target, sf::RenderStates states) const
+    void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         //Partie visuelle d'un bouton = rectangle + text par dessus 
         sf::Text txt(_button_text, sf::Font::GetDefaultFont(), 30);
@@ -24,21 +24,21 @@ private:
         rect.setPosition(_x_pos, _y_pos); 
         rect.setSize(sf::Vector2f(200.f, 100.f));
         rect.setScale(sf::Vector2f(0.1f, 0.1f));
-        rect.setFillColor(sf::Color::Grey);
+        rect.setFillColor(sf::Color::Blue);
         rect.setOutlineColor(sf::Color::Black);
         rect.setOutlineThickness(1.f);
 
         //enfin on dessine le rectangle et le text par dessus.
-        target.draw(sf::RectangleShape, NULL); //à voir si sfmmerde prend les NULL pour les paramètres par défaut...
-        target.draw(txt, NULL);
+        target.draw(rect); //à voir si sfmmerde prend les NULL pour les paramètres par défaut...
+        target.draw(txt);
     }
 public:
     //constructeur: (penser a ajouter destructor et/ou constructor par copie)
     Button(string str, pair<float,float> position)
     {
         set_button_text(str);
-        set_x_pos(position.first());
-        set_y_pos(position.second()); 
+        set_x_pos(position.first);
+        set_y_pos(position.second); 
     }
 
     //getters et setters, pas sûr qu'on s'en serve mais je les crée au cas où:
@@ -51,4 +51,4 @@ public:
     float get_y_pos(void) {return _y_pos;}
     void set_y_pos(float new_pos) {_y_pos = new_pos;}
 
-}
+};
