@@ -9,10 +9,9 @@ private:
     bool answer;          //la réponse correcte
     
 public:   
-    TrueFalse(string name, string text, int points, int nb_choices, vector<string> choices, int i_answer):
-    Question(name, text, points)
+    TrueFalse(string text, int points, int i_answer):
+    Question(text, points)
     {
-        _nb_choices = nb_choices;
         _choices = choices;
         _i_answer = i_answer;
     }
