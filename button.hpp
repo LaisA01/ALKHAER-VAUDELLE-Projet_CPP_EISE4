@@ -12,6 +12,7 @@ private:
     string _button_text;    //text du bouton
     float _x_pos;           //abcisce du coin en haut à droite du bouton
     float _y_pos;           //ordonnée du coin en haut à droite du bouton
+    
 
     virtual void draw(sf::RenderTarger& target, sf::RenderStates states) const
     {

@@ -1,4 +1,3 @@
-#pragma once
 #include "game.h"
 
 using std::string; using std::pair; using std::vector;
@@ -34,7 +33,7 @@ Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
-	this->initEnemies();
+	//this->initEnemies();
 }
 
 Game::~Game()
@@ -79,7 +78,7 @@ void Game::render()
 {
 	this->window->clear(sf::Color(31,100,32, 125));
 
-	this->window->draw(this->enemy);
+	//this->window->draw(this->enemy);
 
 	this->window->display();
 }

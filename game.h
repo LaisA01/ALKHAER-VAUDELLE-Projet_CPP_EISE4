@@ -20,7 +20,7 @@ public:
     Game();
     ~Game();
     void pollEvents();
-    void Game::update();
-    void Game::render();
+    void update();
+    void render();
 
-}
+};
