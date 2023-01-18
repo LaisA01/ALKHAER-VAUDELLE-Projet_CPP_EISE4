@@ -9,6 +9,7 @@ SFML_LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
 
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(SFML_LIBS)
+	rm -f $(OBJS)
 
 main.o: main.cpp
 	$(CC) $(FLAGS) main.cpp 

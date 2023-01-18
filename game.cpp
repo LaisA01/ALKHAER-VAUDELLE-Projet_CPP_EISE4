@@ -17,7 +17,7 @@ void Game::initWindow(void)
     this->window->clear(sf::Color(31,100,32, 125));
 	//Button test_button("test", {100,100});
 
-	//this->window->draw(test_button)
+	//this->window->draw(test_button);
 
     this->window->display();
 
@@ -82,6 +82,9 @@ void Game::render()
 {
 	this->window->clear(sf::Color(31,100,32, 125));
 
+	Button test_button("test", {100, 300}, sf::Vector2f(100.f, 100.f), sf::Color::Blue, 100, sf::Color::Green);
+
+	this->window->draw(test_button);
 	//this->window->draw(this->enemy);
 
 	this->window->display();
