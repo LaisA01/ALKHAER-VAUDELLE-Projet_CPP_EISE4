@@ -9,6 +9,7 @@
 #include <SFML/Network.hpp>
 #include <string>
 #include <SFML/Graphics/Text.hpp>
+#include "game.h"
 
 using std::string; using std::pair; using std::vector;
 
@@ -53,12 +54,13 @@ private:
         target.draw(txt);
     }
 public:
-    //constructeur: (penser a ajouter destructor et/ou constructor par copie)
+    //constructeurs: (penser a ajouter destructor et/ou constructor par copie)
+    
     Button(string str, pair<float,float> position, sf::Vector2f rect_size, sf::Color rect_color, int text_size, sf::Color text_fill_color)
     {
         set_button_text(str);
-        set_x_pos(position.first);
-        set_y_pos(position.second); 
+        set_x_pos((position.first - (rect_size.x/2)));
+        set_y_pos((position.second - (rect_size.y/2))); 
 
         set_rect_size(rect_size);
         set_rect_fill_color(rect_color);
@@ -88,4 +90,16 @@ public:
     sf::Color get_text_fill_color(void) {return _text_fill_color;}
     void set_text_fill_color(sf::Color new_color) {_text_fill_color = new_color;}
 
+    //méthode qui permet de regarder si le bouton a été appuyé:
+    int is_mouse_on(sf::RenderWindow* win)
+    {
+        if(get_x_pos() < sf::Mouse::getPosition(*win).x < get_x_pos() + get_rect_size().x)
+        {
+            if(get_y_pos() < sf::Mouse::getPosition(*win).y < get_y_pos() + get_rect_size().y)
+            {
+                return 1;                
+            }
+        }
+        return 0;
+    }
 };
