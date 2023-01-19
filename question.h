@@ -34,4 +34,3 @@ public:
 
     virtual string get_answer(void) = 0;
 };
-

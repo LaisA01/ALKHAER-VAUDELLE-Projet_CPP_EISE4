@@ -93,9 +93,9 @@ public:
     //méthode qui permet de regarder si le bouton a été appuyé:
     int is_mouse_on(sf::RenderWindow* win)
     {
-        if(get_x_pos() < sf::Mouse::getPosition(*win).x < get_x_pos() + get_rect_size().x)
+        if(get_x_pos() < sf::Mouse::getPosition(*win).x && sf::Mouse::getPosition(*win).x < get_x_pos() + get_rect_size().x)
         {
-            if(get_y_pos() < sf::Mouse::getPosition(*win).y < get_y_pos() + get_rect_size().y)
+            if(get_y_pos() < sf::Mouse::getPosition(*win).y && sf::Mouse::getPosition(*win).y < get_y_pos() + get_rect_size().y)
             {
                 return 1;                
             }

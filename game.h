@@ -18,9 +18,11 @@ private:
     int _graphics_FSM;
 
 	Button start_button = Button(" test", {this->VM.width/2, this->VM.height/2}, sf::Vector2f(100.f, 60.f), sf::Color::Blue, 45, sf::Color::Green);
-;
+    //std::vector<MCQ> MCQ_vector;
+
 
 public:
+    vector<Button> choice_button_vector; // à voir si on le met en private mais pour l'instant flemme
 
     const bool running() const;
     Game();

@@ -21,8 +21,8 @@ public:
     void set_time_out(bool new_val) {_time_out = new_val;}
 
 
-    TimedMCQ(string name, string text, int points, int nb_choices, vector<string> choices, int i_answer, int timer_value):
-    MCQ(name, text, points, nb_choices, choices, i_answer)
+    TimedMCQ(string text, int points, int nb_choices, vector<string> choices, int i_answer, int timer_value):
+    MCQ(text, points, nb_choices, choices, i_answer)
     {
         _timer_value = timer_value;
         _timer_value = 0;
