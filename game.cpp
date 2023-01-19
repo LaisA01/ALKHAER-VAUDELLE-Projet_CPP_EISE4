@@ -1,18 +1,36 @@
 #include "game.h"
 #include "button.hpp"
-
+#include "TrueFalse.h"
 using std::string; using std::pair; using std::vector;
-vector<Button> choice_button_vector; //g essayé de le mettre dans MCQ.h mais ils voulait pas donc voila une sale variable globale ...
-vector<MCQ> MCQ_vector; 			//c'est honteux mais il fallait bien avancer le projet
+
+struct q
+{
+	MCQ M;
+	//TrueFalse TF;
+	int question_type; //0 for MCQ, 1 for TF, 2 for TimedMCQ, etc..
+
+};
+
+vector<Button> choice_button_buffer; //buffer pour les boutons des QCM
+
+//a remplacer par des vecteurs générés automatiquement par des fonctions de lecture de fichier:
+vector<MCQ> MCQ_vector; 
+vector<q> current_questions; //vector des questions de la partie en cours
 
 void Game::initVariables(void)
 {
-	MCQ_vector.push_back(MCQ("Combien d'esclaves sont mort pour construire les stades de la CDM Qatar 2022?", 1, 4, {"~10", "~100", "Nan mai sa a rien a voire conentrons nou sur le foutbol", "c parsque c un paye arab que vou dite sa c sa?"}, 1));
-	this->window = nullptr; //le gars dans le tuto dit de faire ça, à voir si on garde ou pas
+	this->window = nullptr; //le gars dans le tuto dit de faire ça, à voir si on garde ou pas	
 
-	for(int i = 0; i < MCQ_vector[0].get_nb_choices(); i++)
+	q Q1{.M = MCQ("Combien d'esclaves sont mort pour construire les stades de la CDM Qatar 2022?", 1, 4, 
+	{"Quelques dizaines", "Quelques centaines", "Nan mai sa a rien a voire conentrons nou sur le foutbol", 
+	"c parsque c un paye arab que vou dite sa c sa?"}, 1), .question_type = 0};
+	
+	current_questions.push_back(Q1);
+
+	for(int i = 0; i < current_questions[0].M.get_nb_choices(); i++)
 	{
-		choice_button_vector.push_back(Button(MCQ_vector[0]._choices[i], {300, 100*(i+1)}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White));
+		choice_button_buffer.push_back(Button(current_questions[0].M._choices[i], {300, 100*(i+1)},
+		 sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White));
 	}
 
 }
@@ -136,10 +154,11 @@ void Game::render()
 		break;
 	case 1:
 		this->window->clear(sf::Color(31,100,32, 125));
-		this->window->draw(sf::Text(MCQ_vector[0].get_text(),fnt, 25));
-		for(int i = 0; i < MCQ_vector[0].get_nb_choices(); i++)
+		
+		this->window->draw(sf::Text(current_questions[0].M.get_text(),fnt, 25));
+		for(int i = 0; i < current_questions[0].M.get_nb_choices(); i++)
 		{
-			this->window->draw(choice_button_vector[i]);
+			this->window->draw(choice_button_buffer[i]);
 		}
 
 

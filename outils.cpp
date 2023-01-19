@@ -7,7 +7,7 @@ using std::vector;
 int loadTFQ(vector<TrueFalse*> &TFTable)
 {
 	ifstream file("listQTF.txt");
-	if (!file) 
+	if (!file)
 	{
 		cout << "Error : Can't open listTFQ file" << endl;
 		return 0;
