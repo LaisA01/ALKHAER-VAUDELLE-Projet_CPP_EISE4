@@ -7,12 +7,12 @@ vector<MCQ> MCQ_vector; 			//c'est honteux mais il fallait bien avancer le proje
 
 void Game::initVariables(void)
 {
-	MCQ_vector.push_back(MCQ("Combien d'esclaves sont mort pour construire les stades de la CDM Qatar 2022?", 1, 3, {"~10", "~100", "~1000"}, 1));
+	MCQ_vector.push_back(MCQ("Combien d'esclaves sont mort pour construire les stades de la CDM Qatar 2022?", 1, 4, {"~10", "~100", "Nan mai sa a rien a voire conentrons nou sur le foutbol", "c parsque c un paye arab que vou dite sa c sa?"}, 1));
 	this->window = nullptr; //le gars dans le tuto dit de faire ça, à voir si on garde ou pas
 
 	for(int i = 0; i < MCQ_vector[0].get_nb_choices(); i++)
 	{
-		choice_button_vector.push_back(Button(MCQ_vector[0]._choices[i], {100, 100*(i+1)}, sf::Vector2f(800.f, 80.f), sf::Color(251,100,32, 175), 25, sf::Color::White));
+		choice_button_vector.push_back(Button(MCQ_vector[0]._choices[i], {300, 100*(i+1)}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White));
 	}
 
 }
@@ -136,7 +136,7 @@ void Game::render()
 		break;
 	case 1:
 		this->window->clear(sf::Color(31,100,32, 125));
-		
+		this->window->draw(sf::Text(MCQ_vector[0].get_text(),fnt, 25));
 		for(int i = 0; i < MCQ_vector[0].get_nb_choices(); i++)
 		{
 			this->window->draw(choice_button_vector[i]);
