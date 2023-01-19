@@ -22,6 +22,6 @@ public:
 
     string get_answer(void)
     {
-        return ("La réponse correcte est: " + _choices[i_answer] + ". ");
+        return ("La réponse correcte est: " + _choices[_i_answer] + ". ");
     }
 };
