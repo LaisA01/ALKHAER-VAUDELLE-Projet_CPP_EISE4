@@ -18,7 +18,7 @@ private:
 
 public:
 
-    Question(string name, string text, int points)
+    Question(string text, int points)
     {
         _text = text;
         _points = points;
