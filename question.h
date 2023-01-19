@@ -24,7 +24,6 @@ public:
         _points = points;
 
     }
-    ~Question();
 
     string  get_text(void) { return _text;}
     void set_text(string new_text) { _text = new_text;}
