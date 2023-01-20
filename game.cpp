@@ -14,8 +14,10 @@ vector<MCQ*> MCQ_vector;
 vector<TrueFalse*> TF_vector;
 
 int current_question = 0;
-int current_question_type; //0 pour MCQ, 1 pour TF, etc
+int current_question_type = 0; //0 pour MCQ, 1 pour TF, etc
 int stop_game_flag;
+
+int score = 0;
 
 
 void Game::initVariables(void)
@@ -100,70 +102,103 @@ Game::~Game()
 
 void Game::pollEvents()
 {
+	bool question_answered = false;;
 	//Event polling loop
 	while (this->window->pollEvent(this->ev))
 	{
-		switch (this->ev.type)
+		switch (this->get_FSM())
 		{
-		case sf::Event::Closed:
-			this->window->close();
-			break;
-
-		case sf::Event::KeyPressed:
-			if (this->ev.key.code == sf::Keyboard::Escape)
-			{
-				this->window->close();
-			}
-			break;
-
-		case sf::Event::MouseButtonPressed:
-			switch(this->get_FSM())				
-			{
-			case 0:		//état: écran start
-				if (this->ev.mouseButton.button == sf::Mouse::Left)
+			case 0:  
+				switch (this->ev.type)
 				{
-					if (this->start_button.is_mouse_on(this->window) == 1)
+				case sf::Event::Closed:
+					this->window->close();
+					break;
+
+				case sf::Event::KeyPressed:
+					if (this->ev.key.code == sf::Keyboard::Escape)
 					{
-						this->set_FSM(1);
+						this->window->close();
 					}
-					std::cout << this->start_button.is_mouse_on(this->window) << std::endl;
-				}
+					break;
+
+				case sf::Event::MouseButtonPressed:
+					if (this->ev.mouseButton.button == sf::Mouse::Left)
+					{
+						if (this->start_button.is_mouse_on(this->window) == 1)
+						{
+							this->set_FSM(1);
+						}
+					//std::cout << this->start_button.is_mouse_on(this->window) << std::endl;
+					}
+					break;
+				} 
 				break;
-			case 1:    //état: partie en cours
-				switch(current_question_type)
+
+			case 1: 
+
+			while(question_answered != true) //tant qu'on n'a pas répondu à la question posée
+			{
+				std::cout<<"j'en ai marre"<<std::endl; 
+
+				switch (this->ev.type)
 				{
-					case 0:  //s'il s'agit d'un QCM
+				case sf::Event::Closed:
+					this->window->close();
+					//break;
+				case sf::Event::KeyPressed:
+					if (this->ev.key.code == sf::Keyboard::Escape)
+					{
 						this->window->close();
-						break;
-					case 1:		//TF
-						this->window->close();
-						break;
-					//case 2:	//QCM timé
-						//actions
-						//break;
+					}
+					//break;
+
+				case sf::Event::MouseButtonPressed:
+					switch (current_question_type)
+					{
+					case 0:
+						for(int i = 0; i < 4; i++)
+						{
+							if (MCQ_choice_button_buffer[current_question][i].is_mouse_on(this->window) == 1)
+							{
+								question_answered = true;
+								if(i == (MCQ_vector[current_question]->get_i_answer()))
+								{
+									score += MCQ_vector[current_question]->get_points(); 
+								}
+							}
+						}
+					//break;
+					
+					//case 1:
+					//break;
+					
+					//case 2:
+					//break;
+					}
+				//break;
 				}
-				break;
+			//break;
 			}
-			break;
 		}
 	}
-
 }
+		
 
 
 void Game::update()
 {
 	this->pollEvents();
 	//std::cout << "Mouse pos: " << sf::Mouse::getPosition(*this->window).x << " " << sf::Mouse::getPosition(*this->window).y << std::endl;
-	std::cout << "Game updated" << std::endl;
+	//std::cout << "Game updated" << std::endl;
 
 }
 
-
+int var = 100;
 
 void Game::render()
 {
-	std::cout<<"Game rendered"<<std::endl;
+	//std::cout<<"Game rendered"<<std::endl;
 	this->window->clear(sf::Color(31,100,32, 125));
 	
 	/*Pour le compte rendu: re-afficher des objets qui ne 
@@ -188,7 +223,7 @@ void Game::render()
 		break;
 
 	case 1:		//état partie en cours
-
+		std::cout<<var<<std::endl;
 		if((MCQ_vector.empty() == true && TF_vector.empty() == true) || stop_game_flag == 1)
 		{
 			this->set_FSM(2);
@@ -211,6 +246,9 @@ void Game::render()
 			{
 				this->window->draw(*(it));
 			}
+
+			//case 1:
+			//case 2:
 		}
 		break;
 
@@ -220,7 +258,7 @@ void Game::render()
 
 	}
 	//this->window->draw(this->enemy);
-
+	var++;
 	this->window->display();
 }
 
