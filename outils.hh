@@ -6,9 +6,13 @@
 #include <string>
 #include <vector>
 #include "TrueFalse.h"
+#include "MCQ.h"
 
 
-//Load all the True/False question from listQTF file
+//Load all the True/False questions from the listQTF file
 int loadTFQ(vector<TrueFalse*> &TFTable);
+
+//Load all the multiple choices questions from the listMCQ.txt file
+int loadMCQ(vector<MCQ*> & MCQTable);
 
 #endif

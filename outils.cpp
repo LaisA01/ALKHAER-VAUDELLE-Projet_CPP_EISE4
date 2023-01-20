@@ -31,3 +31,46 @@ int loadTFQ(vector<TrueFalse*> &TFTable)
 
 	return 1;
 }
+
+int loadMCQ(vector<MCQ*> & MCQTable)
+{
+	ifstream file("listMCQ.txt");
+	if(!file)
+	{
+		cout << "Error :  Can't open listMCQ.txt" << endl;
+		return 0;
+	}
+
+	char sentence[256];
+	int value;
+	MCQ* pMCQuestion;
+	while(file.getline(sentence, 256))
+	{
+
+		string question(sentence);
+
+		file.getline(sentence,256);
+		string reponseA(sentence);
+		file.getline(sentence,256);
+		string reponseB(sentence);
+		file.getline(sentence,256);
+		string reponseC(sentence);
+		file.getline(sentence,256);
+		string reponseD(sentence);
+
+		file.getline(sentence, 256);
+		string score(sentence);
+		file.getline(sentence, 256);
+		string answer(sentence);
+
+		pMCQuestion = new MCQ(question, stoi(score),
+		 {reponseA, reponseB, reponseC, reponseD}, stoi(answer));
+		MCQTable.push_back(pMCQuestion);
+	}
+
+	return 1;
+}
+
+template<T>
+void randomize(vector<T> listQuestion)
+{}
