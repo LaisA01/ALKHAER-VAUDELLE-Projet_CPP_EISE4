@@ -23,4 +23,6 @@ public:
         else
             return ("La réponse correcte est: faux.");
     }
+
+    int get_i_answer(void) { return _i_answer;}
 };

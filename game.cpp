@@ -1,11 +1,9 @@
 #include "game.h"
 
 using std::string, std::pair, std::vector, std::to_string;
+using std::cout, std::endl;
 
 
-
-//vector<vector<Button>> MCQ_choice_button_buffer; //buffer pour les boutons des QCM
-//vector<vector<Button>> TF_choice_button_buffer; //buffer pour les boutons des QCM
 vector<Button> current_buttons_list; 
 
 
@@ -13,7 +11,7 @@ vector<MCQ*> MCQ_vector;
 vector<TrueFalse*> TF_vector;
 
 int current_question = 0;
-int current_question_type = 1; //0 pour MCQ, 1 pour TF, etc
+int current_question_type = 0; //0 pour MCQ, 1 pour TF, etc
 int stop_game_flag;
 
 bool question_answered = false;
@@ -38,7 +36,7 @@ void Game::initVariables(void)
 void Game::initWindow(void)
 {
 	//init window:
-	this->set_FSM(END);
+	this->set_FSM(START);
     this->VM.height = 500;
     this->VM.width = 1000;
     this->window = new sf::RenderWindow(this->VM, "Test", sf::Style::Default);
@@ -66,7 +64,6 @@ Game::Game()
 {
 	this->initVariables();
 	this->initWindow();
-	//this->initEnemies();
 }
 
 Game::~Game()
@@ -74,26 +71,46 @@ Game::~Game()
 	delete this->window;
 }
 
-
+// Note importante : 
+// Pour les fermeture si on veux le point rapport à la mémoire 
+// en réalité faudrait faire une fonction qui s'occupe de tout
+// free PUIS qui close la fenêtre et bisous fin de programme
+// Mais ça implique peut-être de mettre en place un mécanisme
+// pour traquer tout ce qu'on alloue
+// Après je crois que "new" le fait automatiquement, mais pas sûr.
 void Game::pollEvents()
 {
 	while (this->window->pollEvent(this->ev))
 	{
+		// À voir si on garde, la touche échap permet  ainsi
+		// de fermer le jeu à tout instant.
+		if (this->ev.type == sf::Event::KeyPressed)
+		{
+						if (this->ev.key.code == sf::Keyboard::Escape)
+						{
+							this->window->close();
+						}
+		}
+		//Pareil mais avec la fermeture de l'onglet
+		//Ok j'avoue c'est un peu des détails mais c'est plus propre avoue
+		if (this->ev.type == sf::Event::Closed) {this->window->close();}
 		switch (this->get_FSM())
 		{
-			case 0:  //FSM 0: start
+			case START:  //FSM 0: start
 				switch (this->ev.type)
 				{
-				case sf::Event::Closed:
+				/*case sf::Event::Closed:
 					this->window->close();
-					break;
+					break; */ 
+					// A voir
 
-				case sf::Event::KeyPressed:
+				/*case sf::Event::KeyPressed:
 					if (this->ev.key.code == sf::Keyboard::Escape)
 					{
 						this->window->close();
 					}
-					break;
+					break;*/
+					// A voir
 
 				case sf::Event::MouseButtonPressed:
 					if (this->ev.mouseButton.button == sf::Mouse::Left)
@@ -107,7 +124,7 @@ void Game::pollEvents()
 				} 
 				break;
 
-			case 1: //FSM 1 : question
+			case QUESTION: //FSM 1 : question
 
 				switch (this->ev.type)
 				{
@@ -149,6 +166,7 @@ void Game::pollEvents()
 						{
 							if (current_buttons_list[i].is_mouse_on(this->window) == 1)
 							{
+								cout << "indice : " + to_string(i) << endl;
 								question_answered = true; //flag
 
 								if(i == (TF_vector[current_question]->get_i_answer()))
@@ -227,18 +245,11 @@ void Game::render()
 		{
 		case 0: //si QCM normal
 		{
-			if(MCQ_vector.size() > 1)
-				this->window->draw(sf::Text(MCQ_vector.back()->get_text(),fnt, 25));
-			else
-				this->window->close();
-			//vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
-			
-			if(question_answered == true)
-			{
-				question_answered = false;
-				MCQ_vector.pop_back();
-			}
 
+			// Le pb venait de ce bloc, en le mettant après celui
+			// du "if question anwsered" et vu qu'il travail sur la liste
+			// de question, quand il reste qu'une question et que tu la pop
+			// le MCQ_vector.back() cause un segfault !
 			int temp_choice_index = 0;
 			for (auto it = current_buttons_list.begin(); it !=  current_buttons_list.end(); ++it)
 			{
@@ -247,13 +258,28 @@ void Game::render()
 				temp_choice_index++;
 			}
 
+			this->window->draw(sf::Text(MCQ_vector.back()->get_text(),fnt, 25));
+
+			if(question_answered == true)
+			{
+				question_answered = false;
+				MCQ_vector.pop_back(); // Il est innocent votre honneur !
+				if (MCQ_vector.empty()) {current_question_type = 1;} 
+				//J'ajoute ça pour enchainer les questions tranquille
+				// A laisser si on décide qu'il y a zéro rng dans l'ordre
+				// des questions
+				// Penser à retirer le com' avant le rendu 
+				// Note pour si jamais on a oublié : Oupsi <3 
+			}
+
+
 			break;
 		}	
 		case 1:
 		{
-			if(TF_vector.size() > 1)
+			if(TF_vector.size() >= 1)
 				this->window->draw(sf::Text(TF_vector.back()->get_text(),fnt, 25));
-			else
+			else //Identique au truc plus haut
 				this->window->close();
 			//vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
 			
