@@ -6,8 +6,9 @@
 
 #define START 0
 #define QUESTION 1
+#define END 2
 
-using std::string, std::pair, std::vector;
+using std::string, std::pair, std::vector, std::to_string;
 
 
 
@@ -218,6 +219,7 @@ void Game::render()
 	sf::Font fnt;
 	fnt.loadFromFile("arial/arial.ttf");
 	sf::Text welcome_text("Quizz coupe du monde! Pour jouer, appuyez sur le bouton Start.", fnt, 35);
+	sf::Text goodbye_text(" ", fnt, 35);
 	//welcome_text.setPosition(this->VM.width/2, 50);
 	switch(this->get_FSM())
 	{
@@ -261,10 +263,10 @@ void Game::render()
 		}
 		break;
 
-
-
-
-
+	case END:
+			string message("Merci d'avoir joué ! \n Votre score est de :\n");
+			message += to_string(score) + "(ok on avoue on a attribué les points au pif";
+		break;
 	}
 	var++;
 	this->window->display();
