@@ -1,6 +1,14 @@
 #pragma once
 #include "MCQ.h"
 #include "button.hpp"
+#include <list>
+#include "TrueFalse.h"
+#include "outils.hh"
+#include "unistd.h"
+
+#define START 0
+#define QUESTION 1
+#define END 2
 
 using std::string; using std::pair; using std::vector;
 

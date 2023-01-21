@@ -1,10 +1,6 @@
 #include "game.h"
 
-#define START 0
-#define QUESTION 1
-#define END 2
-
-using std::string, std::pair, std::vector, std::to_string, std::list;
+using std::string, std::pair, std::vector, std::to_string;
 
 
 
@@ -42,7 +38,7 @@ void Game::initVariables(void)
 void Game::initWindow(void)
 {
 	//init window:
-	this->set_FSM(0);
+	this->set_FSM(END);
     this->VM.height = 500;
     this->VM.width = 1000;
     this->window = new sf::RenderWindow(this->VM, "Test", sf::Style::Default);
@@ -206,7 +202,7 @@ void Game::render()
 		std::cout << question_answered << std::endl;
 		if((MCQ_vector.empty() == true && TF_vector.empty() == true) || stop_game_flag == 1)
 		{
-			this->set_FSM(2);
+			this->set_FSM(END);
 			break;
 		}
 
@@ -233,14 +229,19 @@ void Game::render()
 			}
 
 
-			//case 1:
-			//case 2:
 		}
 		break;
 
 	case END:
-			string message("Merci d'avoir joué ! \n Votre score est de :\n");
-			message += to_string(score) + "(ok on avoue on a attribué les points au pif";
+			string message("Merci d'avoir joue ! \nVotre score est de :\n");
+			message += to_string(score) + "\n(ok on avoue on a attribué les points au pif";
+			goodbye_text.setString(message);
+			goodbye_text.setPosition(this->VM.width/4, this->VM.height/2);
+			
+			this->window->draw(goodbye_text);
+
+
+
 		break;
 	}
 	var++;
