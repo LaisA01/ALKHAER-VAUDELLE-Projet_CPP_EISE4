@@ -32,7 +32,7 @@ int loadTFQ(vector<TrueFalse*> &TFTable)
 	return 1;
 }
 
-int loadMCQ(vector<MCQ*> & MCQTable)
+int loadMCQ(vector<MCQ*> &MCQTable)
 {
 	ifstream file("listMCQ.txt");
 	if(!file)
@@ -71,6 +71,24 @@ int loadMCQ(vector<MCQ*> & MCQTable)
 	return 1;
 }
 
-template<T>
-void randomize(vector<T> listQuestion)
-{}
+template<typename T>
+void randomize(vector<T*> &listQuestion)
+{
+	T* questionA;
+	int size = listQuestion.size();
+	int indiceA = 0;
+	int indiceB = 0;
+	for(auto i = 0; i < 1000; ++i) //Moi je dis y'a un point pour l'humour là
+	{
+		indiceA = rand() % size;
+		indiceB = rand() % size;
+		if (indiceA != indiceB)
+		{
+			questionA = listQuestion[indiceA];
+			listQuestion[indiceA] = listQuestion[indiceB];
+			listQuestion[indiceB] = questionA;
+		}
+	}
+
+	return;
+}
