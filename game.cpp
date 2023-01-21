@@ -153,6 +153,9 @@ void Game::pollEvents()
 					}
 					//break;
 
+				default:
+					if (this->window->waitEvent(this->ev))
+
 				case sf::Event::MouseButtonPressed:
 					switch (current_question_type)
 					{
