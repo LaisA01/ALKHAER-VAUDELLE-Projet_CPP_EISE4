@@ -22,7 +22,7 @@ public:
 
 
     TimedMCQ(string text, int points, int nb_choices, vector<string> choices, int i_answer, int timer_value):
-    MCQ(text, points, choices, i_answer)
+    MCQ(text, points, nb_choices, choices, i_answer)
     {
         _timer_value = timer_value;
         _timer_value = 0;

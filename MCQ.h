@@ -29,5 +29,5 @@ public:
     }
 
     string get_q_type(void) {return _q_type;} //pas besoin de setter sur ce membre..
-    int get_i_answer(void) {return _i_answer;}
+
 };
