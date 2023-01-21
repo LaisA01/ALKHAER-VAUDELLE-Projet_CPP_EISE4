@@ -4,6 +4,9 @@
 #include "outils.hh"
 #include "unistd.h"
 
+#define START 0;
+#define QUESTION 1;
+
 using std::string, std::pair, std::vector;
 
 
@@ -215,14 +218,14 @@ void Game::render()
 	switch(this->get_FSM())
 	{
 
-	case 0:		//état écran start	
+	case START:		//état écran start	
 
 		//bouton start:
 		this->window->draw(this->start_button);
 		this->window->draw(welcome_text);
 		break;
 
-	case 1:		//état partie en cours
+	case QUESTION:		//état partie en cours
 		std::cout<<var<<std::endl;
 		if((MCQ_vector.empty() == true && TF_vector.empty() == true) || stop_game_flag == 1)
 		{
