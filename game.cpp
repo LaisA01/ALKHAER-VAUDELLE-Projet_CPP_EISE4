@@ -13,7 +13,7 @@ vector<MCQ*> MCQ_vector;
 vector<TrueFalse*> TF_vector;
 
 int current_question = 0;
-int current_question_type = 0; //0 pour MCQ, 1 pour TF, etc
+int current_question_type = 1; //0 pour MCQ, 1 pour TF, etc
 int stop_game_flag;
 
 bool question_answered = false;
@@ -77,13 +77,11 @@ Game::~Game()
 
 void Game::pollEvents()
 {
-	//question_answered = false;
-	//Event polling loop
 	while (this->window->pollEvent(this->ev))
 	{
 		switch (this->get_FSM())
 		{
-			case 0:  
+			case 0:  //FSM 0: start
 				switch (this->ev.type)
 				{
 				case sf::Event::Closed:
@@ -104,54 +102,72 @@ void Game::pollEvents()
 						{
 							this->set_FSM(1);
 						}
-					//std::cout << this->start_button.is_mouse_on(this->window) << std::endl;
 					}
 					break;
 				} 
 				break;
 
-			case 1: //FSM 1
+			case 1: //FSM 1 : question
 
 				switch (this->ev.type)
 				{
+
 				case sf::Event::Closed:
 					this->window->close();
-					//break;
+				break;
+
 				case sf::Event::KeyPressed:
 					if (this->ev.key.code == sf::Keyboard::Escape)
 					{
 						this->window->close();
 					}
-					//break;
+				break;
+
 				case sf::Event::MouseButtonPressed:
+					
 					switch (current_question_type)
 					{
 					case 0: //QCM
-						for(int i = 0; i < 4; i++)
+						for(int j = 0; j < 4; j++)
 						{
 							std::cout<< "test"<< std::endl;
+							if (current_buttons_list[j].is_mouse_on(this->window) == 1)
+							{
+								question_answered = true; //flag question repondue ou pas encore
+
+								if(j == (MCQ_vector[current_question]->get_i_answer()))
+								{
+									score += MCQ_vector[current_question]->get_points(); 
+								}
+								break;
+							}
+						}
+					break;
+					
+					case 1:  //Vrai ou faux
+						for(int i = 0; i < 2; i++)
+						{
 							if (current_buttons_list[i].is_mouse_on(this->window) == 1)
 							{
 								question_answered = true; //flag
 
-								if(i == (MCQ_vector[current_question]->get_i_answer()))
+								if(i == (TF_vector[current_question]->get_i_answer()))
 								{
-									score += MCQ_vector[current_question]->get_points(); 
+									score += TF_vector[current_question]->get_points(); 
 								}
-								//this->window->close();
 								break;
-							}
+							}					
+					break;
 						}
 					
-					//case 1:
+					//case 2: //Timed MCQ
+
+						//traitement
+
 					//break;
-					
-					//case 2:
-					//break;
-					}
-				break;
-				//break;
-			//break;
+
+				break;  //break du case sf::Event::MouseButtonPressed:
+				}
 			}
 		}
 	}
@@ -209,9 +225,12 @@ void Game::render()
 		this->window->clear(sf::Color(31,100,32, 125));
 		switch(current_question_type)
 		{
-			case 0: //si QCM normal
-			this->window->draw(sf::Text(MCQ_vector.back()->get_text(),fnt, 25));
-			
+		case 0: //si QCM normal
+		{
+			if(MCQ_vector.size() > 1)
+				this->window->draw(sf::Text(MCQ_vector.back()->get_text(),fnt, 25));
+			else
+				this->window->close();
 			//vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
 			
 			if(question_answered == true)
@@ -220,15 +239,37 @@ void Game::render()
 				MCQ_vector.pop_back();
 			}
 
-			int i = 0;
+			int temp_choice_index = 0;
 			for (auto it = current_buttons_list.begin(); it !=  current_buttons_list.end(); ++it)
 			{
-				(*(it)).set_button_text(MCQ_vector.back()->_choices[i]);
+				(*(it)).set_button_text(MCQ_vector.back()->_choices[temp_choice_index]);
 				this->window->draw(*(it));
-				i++;
+				temp_choice_index++;
 			}
 
+			break;
+		}	
+		case 1:
+		{
+			if(TF_vector.size() > 1)
+				this->window->draw(sf::Text(TF_vector.back()->get_text(),fnt, 25));
+			else
+				this->window->close();
+			//vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
+			
+			if(question_answered == true)
+			{
+				question_answered = false;
+				TF_vector.pop_back();
+			}
 
+			current_buttons_list[0].set_button_text("Vrai");
+			current_buttons_list[1].set_button_text("Faux");
+			this->window->draw(current_buttons_list[0]);
+			this->window->draw(current_buttons_list[1]);
+			break;
+			//case 2:
+		}
 		}
 		break;
 
