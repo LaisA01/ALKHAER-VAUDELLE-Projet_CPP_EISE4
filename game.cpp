@@ -21,6 +21,9 @@ int current_question = 0;
 int current_question_type = 0; //0 pour MCQ, 1 pour TF, etc
 int stop_game_flag;
 
+bool question_answered = false;
+
+
 int score = 0;
 
 
@@ -106,7 +109,7 @@ Game::~Game()
 
 void Game::pollEvents()
 {
-	bool question_answered = false;
+	//question_answered = false;
 	//Event polling loop
 	while (this->window->pollEvent(this->ev))
 	{
@@ -158,6 +161,7 @@ void Game::pollEvents()
 					case 0: //QCM
 						for(int i = 0; i < 4; i++)
 						{
+							std::cout<< "test"<< std::endl;
 							if (MCQ_choice_button_buffer[current_question][i].is_mouse_on(this->window) == 1)
 							{
 								question_answered = true; //flag
@@ -226,7 +230,7 @@ void Game::render()
 		break;
 
 	case QUESTION:		//état partie en cours
-		std::cout<<var<<std::endl;
+		std::cout << question_answered << std::endl;
 		if((MCQ_vector.empty() == true && TF_vector.empty() == true) || stop_game_flag == 1)
 		{
 			this->set_FSM(2);
@@ -234,16 +238,18 @@ void Game::render()
 		}
 
 		this->window->clear(sf::Color(31,100,32, 125));
-		
 		switch(current_question_type)
 		{
 			case 0: //si QCM normal
-
 			this->window->draw(sf::Text(MCQ_vector.back()->get_text(),fnt, 25));
 			
-			
 			vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
-			MCQ_vector.pop_back();
+			
+			if(question_answered == true)
+			{
+				question_answered = false;
+				MCQ_vector.pop_back();
+			}
 
 			for (auto it = temp_choice_vector.begin(); it != temp_choice_vector.end(); ++it)
 			{
