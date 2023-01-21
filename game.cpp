@@ -2,6 +2,7 @@
 #include "button.hpp"
 #include "TrueFalse.h"
 #include "outils.hh"
+#include "unistd.h"
 
 using std::string, std::pair, std::vector;
 
@@ -139,8 +140,7 @@ void Game::pollEvents()
 
 			while(question_answered != true) //tant qu'on n'a pas répondu à la question posée
 			{
-				std::cout<<"j'en ai marre"<<std::endl; 
-
+				//usleep(1000000);
 				switch (this->ev.type)
 				{
 				case sf::Event::Closed:
@@ -162,10 +162,13 @@ void Game::pollEvents()
 							if (MCQ_choice_button_buffer[current_question][i].is_mouse_on(this->window) == 1)
 							{
 								question_answered = true;
+
 								if(i == (MCQ_vector[current_question]->get_i_answer()))
 								{
 									score += MCQ_vector[current_question]->get_points(); 
 								}
+								this->window->close();
+								break;
 							}
 						}
 					//break;
