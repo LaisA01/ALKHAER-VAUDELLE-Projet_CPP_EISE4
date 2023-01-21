@@ -103,7 +103,7 @@ Game::~Game()
 
 void Game::pollEvents()
 {
-	bool question_answered = false;;
+	bool question_answered = false;
 	//Event polling loop
 	while (this->window->pollEvent(this->ev))
 	{
@@ -136,11 +136,8 @@ void Game::pollEvents()
 				} 
 				break;
 
-			case 1: 
+			case 1: //FSM 1
 
-			while(question_answered != true) //tant qu'on n'a pas répondu à la question posée
-			{
-				//usleep(1000000);
 				switch (this->ev.type)
 				{
 				case sf::Event::Closed:
@@ -152,29 +149,24 @@ void Game::pollEvents()
 						this->window->close();
 					}
 					//break;
-
-				default:
-					if (this->window->waitEvent(this->ev))
-
 				case sf::Event::MouseButtonPressed:
 					switch (current_question_type)
 					{
-					case 0:
+					case 0: //QCM
 						for(int i = 0; i < 4; i++)
 						{
 							if (MCQ_choice_button_buffer[current_question][i].is_mouse_on(this->window) == 1)
 							{
-								question_answered = true;
+								question_answered = true; //flag
 
 								if(i == (MCQ_vector[current_question]->get_i_answer()))
 								{
 									score += MCQ_vector[current_question]->get_points(); 
 								}
-								this->window->close();
+								//this->window->close();
 								break;
 							}
 						}
-					//break;
 					
 					//case 1:
 					//break;
@@ -182,8 +174,8 @@ void Game::pollEvents()
 					//case 2:
 					//break;
 					}
+				break;
 				//break;
-				}
 			//break;
 			}
 		}
@@ -201,6 +193,8 @@ void Game::update()
 }
 
 int var = 100;
+
+
 
 void Game::render()
 {
