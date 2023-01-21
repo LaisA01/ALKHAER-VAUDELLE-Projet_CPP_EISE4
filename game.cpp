@@ -4,8 +4,8 @@
 #include "outils.hh"
 #include "unistd.h"
 
-#define START 0;
-#define QUESTION 1;
+#define START 0
+#define QUESTION 1
 
 using std::string, std::pair, std::vector;
 
@@ -266,7 +266,6 @@ void Game::render()
 
 
 	}
-	//this->window->draw(this->enemy);
 	var++;
 	this->window->display();
 }
