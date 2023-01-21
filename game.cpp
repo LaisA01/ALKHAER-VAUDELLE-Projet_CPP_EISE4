@@ -1,18 +1,13 @@
 #include "game.h"
-#include "button.hpp"
-#include "TrueFalse.h"
-#include "outils.hh"
-#include "unistd.h"
 
-#define START 0
-#define QUESTION 1
-
-using std::string, std::pair, std::vector;
+using std::string, std::pair, std::vector, std::list;
 
 
 
-vector<vector<Button>> MCQ_choice_button_buffer; //buffer pour les boutons des QCM
-vector<vector<Button>> TF_choice_button_buffer; //buffer pour les boutons des QCM
+//vector<vector<Button>> MCQ_choice_button_buffer; //buffer pour les boutons des QCM
+//vector<vector<Button>> TF_choice_button_buffer; //buffer pour les boutons des QCM
+vector<Button> current_buttons_list; 
+
 
 vector<MCQ*> MCQ_vector; 
 vector<TrueFalse*> TF_vector;
@@ -32,37 +27,12 @@ void Game::initVariables(void)
 	loadTFQ(TF_vector);
 	loadMCQ(MCQ_vector);
 
-	this->window = nullptr; //le gars dans le tuto dit de faire ça, à voir si on garde ou pas	
+	this->window = nullptr; 	
 
-	/*    TrueFalse(string text, int points, int i_answer):
-    Question(text, points)
-    {
-        _i_answer = i_answer;
-    }*/
-
-	for(auto i : MCQ_vector)
+	for(int i = 0; i < 4; i++)
 	{
-		vector<Button> temp_button_vect;
-		for(int j = 0; j < 4; j++)
-		{
-			Button temp_button = Button(i->_choices[j], {300, 100*(j+1)}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White);
-			temp_button_vect.push_back(temp_button);
-		}
-		MCQ_choice_button_buffer.push_back(temp_button_vect);
+		current_buttons_list.push_back(Button(MCQ_vector.back()->_choices[i], {300, 100*(i+1)}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White));
 	}
-
-	for(auto i : TF_vector)
-	{
-		vector<Button> temp_button_vect;
-
-		Button temp_button = Button("Vrai", {300, 100}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White);
-		temp_button_vect.push_back(temp_button);
-		temp_button = Button("Faux", {300, 200}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White);
-		temp_button_vect.push_back(temp_button);
-	
-		TF_choice_button_buffer.push_back(temp_button_vect);
-	}
-
 }
 
 void Game::initWindow(void)
@@ -75,13 +45,11 @@ void Game::initWindow(void)
     this->window->setFramerateLimit(30);
     this->window->clear(sf::Color(31,100,32, 125));
 	
-
-	//init buttons:
+	//init start button:
 	this->start_button = Button(" start", {this->VM.width/2, this->VM.height/2}, sf::Vector2f(110.f, 60.f), sf::Color::Blue, 45, sf::Color::Green);
 
 	//display initialised stuff:
     this->window->display();
-
 
 }
 
@@ -162,7 +130,7 @@ void Game::pollEvents()
 						for(int i = 0; i < 4; i++)
 						{
 							std::cout<< "test"<< std::endl;
-							if (MCQ_choice_button_buffer[current_question][i].is_mouse_on(this->window) == 1)
+							if (current_buttons_list[i].is_mouse_on(this->window) == 1)
 							{
 								question_answered = true; //flag
 
@@ -243,7 +211,7 @@ void Game::render()
 			case 0: //si QCM normal
 			this->window->draw(sf::Text(MCQ_vector.back()->get_text(),fnt, 25));
 			
-			vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
+			//vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
 			
 			if(question_answered == true)
 			{
@@ -251,10 +219,14 @@ void Game::render()
 				MCQ_vector.pop_back();
 			}
 
-			for (auto it = temp_choice_vector.begin(); it != temp_choice_vector.end(); ++it)
+			int i = 0;
+			for (auto it = current_buttons_list.begin(); it !=  current_buttons_list.end(); ++it)
 			{
+				(*(it)).set_button_text(MCQ_vector.back()->_choices[i]);
 				this->window->draw(*(it));
+				i++;
 			}
+
 
 			//case 1:
 			//case 2:
