@@ -161,14 +161,12 @@ void Game::pollEvents()
 					case 0: //QCM
 						for(int j = 0; j < 4; j++)
 						{
-							//std::cout<< "test"<< std::endl;
 							if (current_buttons_list[j].is_mouse_on(this->window) == 1)
 							{
 								question_answered = true; //flag question repondue ou pas encore
 
 								if((MCQ_vector.back()->is_answer(j)))
 								{
-									cout << "Bonne réponse ! :" + to_string(j) << endl;
 									score += MCQ_vector.back()->get_points(); 
 								}
 								break;
@@ -177,11 +175,10 @@ void Game::pollEvents()
 					break;
 					
 					case 1:  //Vrai ou faux
-						for(int i = 0; i < 2; i++)
+						for(int i = 0; i < 2; ++i)
 						{
 							if (current_buttons_list[i].is_mouse_on(this->window) == 1)
 							{
-								cout << "indice : " + to_string(i) << endl;
 								question_answered = true; //flag
 
 								if((TF_vector.back()->is_answer(i)))
@@ -189,9 +186,9 @@ void Game::pollEvents()
 									score += TF_vector.back()->get_points(); 
 								}
 								break;
-							}					
+							}
+						}					
 					break;
-						}
 					
 					//case 2: //Timed MCQ
 
@@ -312,7 +309,7 @@ void Game::render()
 
 	case END:
 			string message("Merci d'avoir joue ! \nVotre score est de :\n");
-			message += to_string(score) + "\n(ok on avoue on a attribué les points au pif";
+			message += to_string(score) + "\n(ok on avoue on a attribue les points au pif";
 			goodbye_text.setString(message);
 			goodbye_text.setPosition(this->VM.width/4, this->VM.height/2);
 			
