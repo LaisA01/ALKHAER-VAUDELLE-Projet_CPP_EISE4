@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include "outils.hh"
+#include "game.h"
 
 using std::cout, std::endl;
 

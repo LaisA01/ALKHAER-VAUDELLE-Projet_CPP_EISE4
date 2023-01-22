@@ -30,4 +30,10 @@ public:
 
     string get_q_type(void) {return _q_type;} //pas besoin de setter sur ce membre..
     int get_i_answer(void) {return _i_answer;}
+
+    int is_answer(int i)
+    {
+        if(i == _i_answer) return 1;
+        else return 0;
+    }
 };

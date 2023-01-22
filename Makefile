@@ -1,6 +1,6 @@
-OBJS	= main.o MCQ.o question.o TrueFalse.o game.o outils.o
-SOURCE	= main.cpp MCQ.cpp question.cpp TrueFalse.cpp game.cpp outils.cpp
-HEADER	= MCQ.h question.h TrueFalse.h game.h TimedMCQ.h button.hpp outils.hh
+OBJS	= main.o MCQ.o question.o TrueFalse.o game.o 
+SOURCE	= main.cpp MCQ.cpp question.cpp TrueFalse.cpp game.cpp 
+HEADER	= MCQ.h question.h TrueFalse.h game.h TimedMCQ.h button.hpp 
 OUT	= quizz.out
 CC	 = g++
 FLAGS	 = -g -c

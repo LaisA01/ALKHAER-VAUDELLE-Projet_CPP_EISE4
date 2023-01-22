@@ -1,15 +1,17 @@
 #pragma once
+#include <fstream>
+#include <list>
+#include <string>
 #include "MCQ.h"
 #include "button.hpp"
-#include <list>
 #include "TrueFalse.h"
-#include "outils.hh"
 #include "unistd.h"
 
 #define START 0
 #define QUESTION 1
 #define END 2
 
+//Faut retirer ça c'est un des sept péchés capitaux du C++
 using std::string; using std::pair; using std::vector;
 
 class Game
@@ -42,5 +44,15 @@ public:
     int get_FSM(void) {return _graphics_FSM;}
     void set_FSM(int state) {_graphics_FSM = state;}
     friend class Button; //pour donner acces aux membres SFML privés de la classe Game.
+
+    //Load all the True/False questions from the listQTF file
+    int loadTFQ(vector<TrueFalse*> &TFTable);
+
+    //Load all the multiple choices questions from the listMCQ.txt file
+    int loadMCQ(vector<MCQ*> & MCQTable);
+
+    // Randomize a list
+    template<typename T>
+    void randomize(vector<T*> &listQuestion);
 
 };

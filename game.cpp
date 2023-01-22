@@ -1,7 +1,7 @@
 #include "game.h"
 
 using std::string, std::pair, std::vector, std::to_string;
-using std::cout, std::endl;
+using std::cout, std::endl, std::ifstream;
 
 
 vector<Button> current_buttons_list; 
@@ -10,7 +10,7 @@ vector<Button> current_buttons_list;
 vector<MCQ*> MCQ_vector; 
 vector<TrueFalse*> TF_vector;
 
-int current_question = 0;
+//int current_question = 0; // Mdr je cherche un bug depuis 1H, c'est parce que cette variable est jamais incrémenté !
 int current_question_type = 0; //0 pour MCQ, 1 pour TF, etc
 int stop_game_flag;
 
@@ -24,6 +24,14 @@ void Game::initVariables(void)
 {
 	loadTFQ(TF_vector);
 	loadMCQ(MCQ_vector);
+
+	for (int i = 0; i < MCQ_vector.size(); ++i) // TEST
+	{
+		cout << MCQ_vector[i]->get_points() << endl;
+		cout << MCQ_vector[i]->get_i_answer() << endl;
+		cout << MCQ_vector[i]->get_answer() << endl;
+		cout << MCQ_vector[i]->get_points() << endl;
+	}
 
 	this->window = nullptr; 	
 
@@ -82,6 +90,12 @@ void Game::pollEvents()
 {
 	while (this->window->pollEvent(this->ev))
 	{
+		/*for(int i = 0; i < 4; i++) // test
+		{
+			if (current_buttons_list[i].is_mouse_on(this->window) == 1)
+				cout << i << endl;
+		}
+		*/
 		// À voir si on garde, la touche échap permet  ainsi
 		// de fermer le jeu à tout instant.
 		if (this->ev.type == sf::Event::KeyPressed)
@@ -129,17 +143,17 @@ void Game::pollEvents()
 				switch (this->ev.type)
 				{
 
-				case sf::Event::Closed:
+				/*case sf::Event::Closed:
 					this->window->close();
 				break;
-
-				case sf::Event::KeyPressed:
+				*/
+				/*case sf::Event::KeyPressed:
 					if (this->ev.key.code == sf::Keyboard::Escape)
 					{
 						this->window->close();
 					}
 				break;
-
+				*/
 				case sf::Event::MouseButtonPressed:
 					
 					switch (current_question_type)
@@ -147,14 +161,15 @@ void Game::pollEvents()
 					case 0: //QCM
 						for(int j = 0; j < 4; j++)
 						{
-							std::cout<< "test"<< std::endl;
+							//std::cout<< "test"<< std::endl;
 							if (current_buttons_list[j].is_mouse_on(this->window) == 1)
 							{
 								question_answered = true; //flag question repondue ou pas encore
 
-								if(j == (MCQ_vector[current_question]->get_i_answer()))
+								if((MCQ_vector.back()->is_answer(j)))
 								{
-									score += MCQ_vector[current_question]->get_points(); 
+									cout << "Bonne réponse ! :" + to_string(j) << endl;
+									score += MCQ_vector.back()->get_points(); 
 								}
 								break;
 							}
@@ -169,9 +184,9 @@ void Game::pollEvents()
 								cout << "indice : " + to_string(i) << endl;
 								question_answered = true; //flag
 
-								if(i == (TF_vector[current_question]->get_i_answer()))
+								if((TF_vector.back()->is_answer(i)))
 								{
-									score += TF_vector[current_question]->get_points(); 
+									score += TF_vector.back()->get_points(); 
 								}
 								break;
 							}					
@@ -233,7 +248,7 @@ void Game::render()
 		break;
 
 	case QUESTION:		//état partie en cours
-		std::cout << question_answered << std::endl;
+		//std::cout << question_answered << std::endl;
 		if((MCQ_vector.empty() == true && TF_vector.empty() == true) || stop_game_flag == 1)
 		{
 			this->set_FSM(END);
@@ -243,7 +258,7 @@ void Game::render()
 		this->window->clear(sf::Color(31,100,32, 125));
 		switch(current_question_type)
 		{
-		case 0: //si QCM normal
+		case 0: //si MCQ
 		{
 
 			// Le pb venait de ce bloc, en le mettant après celui
@@ -271,30 +286,26 @@ void Game::render()
 				// Penser à retirer le com' avant le rendu 
 				// Note pour si jamais on a oublié : Oupsi <3 
 			}
-
+			//cout << "points : " + to_string(MCQ_vector[current_question]->get_points()) << endl; // TEST
+			//cout << "Réponse : " + to_string(MCQ_vector[current_question]->get_i_answer()) << endl; // TEST
 
 			break;
 		}	
-		case 1:
+		case 1: // Si TF
 		{
-			if(TF_vector.size() >= 1)
-				this->window->draw(sf::Text(TF_vector.back()->get_text(),fnt, 25));
-			else //Identique au truc plus haut
-				this->window->close();
-			//vector<Button> temp_choice_vector = MCQ_choice_button_buffer.back();
-			
+			current_buttons_list[0].set_button_text("Faux");
+			current_buttons_list[1].set_button_text("Vrai");
+			this->window->draw(current_buttons_list[0]);
+			this->window->draw(current_buttons_list[1]);
+
+			this->window->draw(sf::Text(TF_vector.back()->get_text(),fnt, 25));
+
 			if(question_answered == true)
 			{
 				question_answered = false;
 				TF_vector.pop_back();
 			}
-
-			current_buttons_list[0].set_button_text("Vrai");
-			current_buttons_list[1].set_button_text("Faux");
-			this->window->draw(current_buttons_list[0]);
-			this->window->draw(current_buttons_list[1]);
 			break;
-			//case 2:
 		}
 		}
 		break;
@@ -315,4 +326,94 @@ void Game::render()
 	this->window->display();
 }
 
+
+//Load all the TFQ. Return 0 if something wrong happened, else 1.
+int Game::loadTFQ(vector<TrueFalse*> &TFTable)
+{
+	ifstream file("listQTF.txt");
+	if (!file)
+	{
+		cout << "Error : Can't open listTFQ file" << endl;
+		return 0;
+	} 
+
+	char sentence[256];
+	int value;
+	TrueFalse* pTFQuestion;
+	while(file.getline(sentence, 256)) // Check if a question last and get it		
+	{
+
+		string question(sentence);
+		file.getline(sentence, 256); // Get score
+		string score(sentence); 	 // Used to cast from char to int, ugly I know
+		file.getline(sentence, 256); // Get answer
+		string answer(sentence);
+
+		pTFQuestion = new TrueFalse(question, stoi(score), stoi(answer));
+		TFTable.push_back(pTFQuestion);
+	}
+
+	return 1;
+}
+
+int Game::loadMCQ(vector<MCQ*> &MCQTable)
+{
+	ifstream file("listMCQ.txt");
+	if(!file)
+	{
+		cout << "Error :  Can't open listMCQ.txt" << endl;
+		return 0;
+	}
+
+	char sentence[256];
+	int value;
+	MCQ* pMCQuestion;
+	while(file.getline(sentence, 256))
+	{
+
+		string question(sentence);
+
+		file.getline(sentence,256);
+		string reponseA(sentence);
+		file.getline(sentence,256);
+		string reponseB(sentence);
+		file.getline(sentence,256);
+		string reponseC(sentence);
+		file.getline(sentence,256);
+		string reponseD(sentence);
+
+		file.getline(sentence, 256);
+		string score(sentence);
+		file.getline(sentence, 256);
+		string answer(sentence);
+
+		pMCQuestion = new MCQ(question, stoi(score),
+		 {reponseA, reponseB, reponseC, reponseD}, stoi(answer));
+		MCQTable.push_back(pMCQuestion);
+	}
+
+	return 1;
+}
+
+template<typename T>
+void Game::randomize(vector<T*> &listQuestion)
+{
+	T* questionA;
+	int size = listQuestion.size();
+	int indiceA = 0;
+	int indiceB = 0;
+	for(auto i = 0; i < 1000; ++i) //Moi je dis y'a un point pour l'humour là
+	{
+		indiceA = rand() % size;
+		indiceB = rand() % size;
+		if (indiceA != indiceB)
+		{
+			questionA = listQuestion[indiceA];
+			listQuestion[indiceA] = listQuestion[indiceB];
+			listQuestion[indiceB] = questionA;
+		}
+	}
+
+	return;
+}
 

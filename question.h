@@ -31,5 +31,5 @@ public:
     int  get_points(void) { return _points;}
     void set_points(int new_points) { _points = new_points;}
 
-    virtual string get_answer(void) = 0;
+    virtual int is_answer(int i) = 0;
 };
