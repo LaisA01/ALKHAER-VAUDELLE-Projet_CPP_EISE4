@@ -6,6 +6,7 @@
 #include "button.hpp"
 #include "TrueFalse.h"
 #include "unistd.h"
+#include "PhotoMCQ.h"
 
 #define START 0
 #define QUESTION 1

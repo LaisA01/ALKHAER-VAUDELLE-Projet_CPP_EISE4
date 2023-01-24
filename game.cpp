@@ -5,10 +5,12 @@ using std::cout, std::endl, std::ifstream;
 
 
 vector<Button> current_buttons_list; 
+vector<Button> current_buttons_list_PhotoMCQ;
 
 
 vector<MCQ*> MCQ_vector; 
 vector<TrueFalse*> TF_vector;
+vector<PhotoMCQ*> PhotoMCQ_vector;
 
 //int current_question = 0; // Mdr je cherche un bug depuis 1H, c'est parce que cette variable est jamais incrémenté !
 int current_question_type = 0; //0 pour MCQ, 1 pour TF, etc
@@ -24,20 +26,23 @@ void Game::initVariables(void)
 {
 	loadTFQ(TF_vector);
 	loadMCQ(MCQ_vector);
+	PhotoMCQ* pizz = new PhotoMCQ("que pensez vous de la pizza", 1, {"a", "b", "c", "d"}, 0, "textures/pizza.jpeg"); //TEST
+    PhotoMCQ_vector.push_back(pizz);
 
-	for (int i = 0; i < MCQ_vector.size(); ++i) // TEST
+	/*for (int i = 0; i < MCQ_vector.size(); ++i) // TEST
 	{
 		cout << MCQ_vector[i]->get_points() << endl;
 		cout << MCQ_vector[i]->get_i_answer() << endl;
 		cout << MCQ_vector[i]->get_answer() << endl;
 		cout << MCQ_vector[i]->get_points() << endl;
-	}
+	}*/
 
 	this->window = nullptr; 	
 
 	for(int i = 0; i < 4; i++)
 	{
 		current_buttons_list.push_back(Button(MCQ_vector.back()->_choices[i], {300, 100*(i+1)}, sf::Vector2f(500.f, 80.f), sf::Color(251,100,32, 175), 20, sf::Color::White));
+		current_buttons_list_PhotoMCQ.push_back(Button(PhotoMCQ_vector.back()->_choices[i], {300, 250*(i+1)}, sf::Vector2f(500.f, 50.f), sf::Color(251,100,32, 175), 20, sf::Color::White));		
 	}
 }
 
@@ -190,11 +195,22 @@ void Game::pollEvents()
 						}					
 					break;
 					
-					//case 2: //Timed MCQ
+					case 2: //PhotoMCQ
+						
+						for(int j = 0; j < 4; j++)
+						{
+							if (current_buttons_list[j].is_mouse_on(this->window) == 1)
+							{
+								question_answered = true; //flag question repondue ou pas encore
 
-						//traitement
-
-					//break;
+								if((PhotoMCQ_vector.back()->is_answer(j)))
+								{
+									score += PhotoMCQ_vector.back()->get_points(); 
+								}
+								break;
+							}
+						}				
+					break;
 
 				break;  //break du case sf::Event::MouseButtonPressed:
 				}
@@ -288,6 +304,7 @@ void Game::render()
 
 			break;
 		}	
+
 		case 1: // Si TF
 		{
 			current_buttons_list[0].set_button_text("Faux");
@@ -301,9 +318,34 @@ void Game::render()
 			{
 				question_answered = false;
 				TF_vector.pop_back();
+				if (MCQ_vector.empty()) {current_question_type = 2;} 
 			}
 			break;
 		}
+
+		case 2: //qcm avec photo
+		{
+			
+			int temp_choice_index = 0;
+			for (auto it = current_buttons_list.begin(); it !=  current_buttons_list.end(); ++it)
+			{
+				(*(it)).set_button_text(PhotoMCQ_vector.back()->_choices[temp_choice_index]);
+				this->window->draw(*(it));
+				temp_choice_index++;
+			}
+
+			this->window->draw(sf::Text(PhotoMCQ_vector.back()->get_text(),fnt, 25));
+            this->window->draw(PhotoMCQ_vector.back()->get_sprite());
+			if(question_answered == true)
+			{
+				question_answered = false;
+				PhotoMCQ_vector.pop_back(); 
+				if (PhotoMCQ_vector.empty()) {current_question_type = 0;} 
+			}
+			
+			break;
+		}	
+
 		}
 		break;
 
