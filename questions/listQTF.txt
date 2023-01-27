@@ -1,5 +1,5 @@
-"Nous sommes un pays pudique, mais quand Miss Croatie est la."
-1
+"Nous sommes un pays pudique, meme quand Miss Croatie est la."
+3
 0
 "Concentrons-nous sur le football, pas la politique"
 1
