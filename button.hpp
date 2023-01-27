@@ -20,7 +20,7 @@ private:
     pair <float, float> _button_pos; //abscisce, ordonnée du coin en haut à droite
     pair <float, float> _rect_size;  //dimension du cadre du bouton
    
-    string _button_text;    //text du bouarton
+    string _button_text;    //text du bouton
     sf::Color  _rect_fill_color;
 
     int _text_size;
@@ -54,7 +54,6 @@ private:
         target.draw(txt);
     }
 public:
-    //constructeurs: (penser a ajouter destructor et/ou constructor par copie)
     
     Button(string str, pair<float,float> position, pair <float, float> rect_size, sf::Color rect_color, int text_size, sf::Color text_fill_color)
     {
@@ -68,7 +67,7 @@ public:
         set_text_fill_color(text_fill_color);
     }
 
-    //getters et setters, pas sûr qu'on s'en serve mais je les crée au cas où:
+    //getters et setters, pas sûr qu'on s'en serve tous mais je les crée au cas où:
     string get_button_text(void) {return _button_text;}
     void set_button_text(string new_text) {_button_text = new_text;}
 

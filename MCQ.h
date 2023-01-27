@@ -33,6 +33,7 @@ public:
         else return 0;
     }
 
+    //operator de copie/affectation:
     virtual void operator = (const MCQ& qcm)
     {
         set_text(qcm.get_text());
@@ -40,6 +41,7 @@ public:
         set_i_answer(qcm.get_i_answer());
     }
 
+    //operateur d'affichage des info de la question dans le flux:
     friend ostream& operator<<(ostream& os, const MCQ& mcq)
     {
         os << mcq.get_text() << '/' << "points: "<< mcq.get_points() << '/'<< "answer: " << mcq._i_answer << std::endl;

@@ -29,7 +29,7 @@ int score = 0;
 //fonction d'init des variables initialisables avant l'onglet (window)
 void Game::initVariables(void)
 {
-	this->window = nullptr; 	//bonne habitude apparement
+	this->window = nullptr; //bonne habitude apparement
 
 	//init audio
 	this->_click_sound_buffer.loadFromFile("audio/click.wav");
@@ -79,7 +79,6 @@ void Game::initWindow(void)
 
 }
 
-
 //accesseur état du jeu (marche/arret):
 const bool Game::running() const
 {
@@ -126,6 +125,7 @@ void Game::pollEvents()
 			}
 		}
 
+		//gestion fermeture de la fenetre quand l'utilisateur appuie sur echap
 		if (this->ev.type == sf::Event::KeyPressed)
 		{
 			if (this->ev.key.code == sf::Keyboard::Escape)
@@ -133,10 +133,11 @@ void Game::pollEvents()
 				this->window->close();
 			}
 		}
-		if (this->ev.type == sf::Event::Closed) {this->window->close();}
-		switch (this->get_FSM())
+		if (this->ev.type == sf::Event::Closed) {this->window->close();} //fermeture de la fenetre quand on appui sur la croix en haut a droite
+		
+		switch (this->get_FSM()) //switch case en fonction de l'état de la machine à états du jeu 
 		{
-			case START:  //FSM 0: start
+			case START:  //FSM 0: start, ici on n'a qu'un seul bouton "start" à gerer
 				switch (this->ev.type)
 				{
 				case sf::Event::MouseButtonPressed:
@@ -154,7 +155,7 @@ void Game::pollEvents()
 
 			case QUESTION: //FSM 1 : question
 
-				switch (this->ev.type)
+				switch (this->ev.type) //switch imbriqué: ici on decide quel traitement faire en fonction de la variable current_question_type
 				{
 				case sf::Event::MouseButtonPressed:
 					switch (current_question_type)
@@ -162,13 +163,13 @@ void Game::pollEvents()
 					case 0: //QCM
 						for(int j = 0; j < 4; j++)
 						{
-							if (current_buttons_list[j].is_mouse_on(this->window) == 1)
+							if (current_buttons_list[j].is_mouse_on(this->window) == 1) //si le click était sur un des 4 boutons:
 							{
-								question_answered = true; //flag question repondue ou pas encore
+								question_answered = true; //on leve le flag qui indique que l'utilisateur a repondu
 								
 								this->_click_sound.play(); //play click sound
 
-								if((MCQ_vector.back()->is_answer(j)))
+								if((MCQ_vector.back()->is_answer(j)))  //enfin on regarde si la reponse est correcte
 								{
 									score += MCQ_vector.back()->get_points(); 
 									answer_is_correct = true;
@@ -179,7 +180,7 @@ void Game::pollEvents()
 						}
 					break;
 					
-					case 1:  //Vrai ou faux
+					case 1:  //Vrai ou faux: fonctionnement similaire aux QCM (case 0) mais avec des boutons en moins et dont le text ne change pas 
 						for(int i = 0; i < 2; ++i)
 						{
 							if (current_buttons_list[i].is_mouse_on(this->window) == 1)
@@ -200,7 +201,7 @@ void Game::pollEvents()
 						}					
 					break;
 					
-					case 2: //PhotoMCQ
+					case 2: //PhotoMCQ: meme fonctionnement que pour les QCM (case 0). les differences se trouvent au niveau graphique
 						
 						for(int j = 0; j < 4; j++)
 						{
@@ -220,7 +221,7 @@ void Game::pollEvents()
 								break;
 							}
 						}				
-					break;
+					break; //break du case photo qcm
 
 				break;  //break du case sf::Event::MouseButtonPressed:
 				}

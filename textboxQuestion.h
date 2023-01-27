@@ -24,6 +24,7 @@ public:
         else return 0;
     }
 
+    //operateur de copie/affectation:
     void operator = (const textboxQuestion& TBQ)
     {
         set_text(TBQ.get_text());
@@ -31,6 +32,7 @@ public:
         _answer_str= TBQ._answer_str;
     }
 
+    //operateur d'affichage des info de la question dans le flux:
     friend ostream& operator<<(ostream& os, const textboxQuestion& tbq)
     {
         os << tbq.get_text() << '/' << "points: "<< tbq.get_points() << '/'<< "answer: " << tbq._answer_str << std::endl;

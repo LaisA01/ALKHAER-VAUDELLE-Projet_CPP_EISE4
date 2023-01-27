@@ -35,6 +35,7 @@ public:
             img_load_success = 0;  
     }
 
+    //operateur de copie/affectation:
     void operator = (const PhotoMCQ& pqcm)
     {
         set_text(pqcm.get_text());
@@ -45,6 +46,7 @@ public:
         set_texture(pqcm.get_texture());
     }
 
+    //operateur d'affichage des info de la question dans le flux:
     friend ostream& operator<<(ostream& os, const PhotoMCQ& pMCQ)
     {
         os << pMCQ.get_text() << '/' << "points: "<< pMCQ.get_points() << '/'<< "answer: " << pMCQ.get_i_answer()<< '/'<< "img_path: "<< pMCQ.get_texture_path() << std::endl;
