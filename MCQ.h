@@ -9,8 +9,6 @@ class MCQ : public Question
 {
 private:
     int _i_answer;          //l'indice de la réponse correcte
-    string _q_type;          //vu qu'il n ya pas de methode IsInstanceOf() en c++, on garde le type de la question dans la classe elle meme 
-
 public:   
     vector<string> _choices; //les choix eux meme
 
@@ -19,21 +17,26 @@ public:
     {
         _choices = choices;
         _i_answer = i_answer;
-        _q_type == "MCQ";
     }
-    //~MCQ(); //à voir si on fait un destructor custom ou pas
 
     string get_answer(void)
     {
         return ("La réponse correcte est: " + _choices[_i_answer] + ". ");
     }
 
-    string get_q_type(void) {return _q_type;} //pas besoin de setter sur ce membre..
-    int get_i_answer(void) {return _i_answer;}
+    int get_i_answer(void) const {return _i_answer;}
+    void set_i_answer(int i) {_i_answer = i;}
 
     int is_answer(int i)
     {
         if(i == _i_answer) return 1;
         else return 0;
+    }
+
+    virtual void operator = (const MCQ& qcm)
+    {
+        set_text(qcm.get_text());
+        set_points(qcm.get_points());
+        set_i_answer(qcm.get_i_answer());
     }
 };

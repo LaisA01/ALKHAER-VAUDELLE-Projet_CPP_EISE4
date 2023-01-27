@@ -1,0 +1,16 @@
+Que voyez vous sur la photo?
+Un bijou architectural neutre en carbone
+Un gros panier en osier
+Un cimetiere qui a coute tres cher
+Un symbole de la moderation
+3
+1
+textures/stade2.jpg
+Que voyez vous sur la photo?
+Le cousin de Casper le phantome.
+La mascotte de la coupe du monde 2022.
+C'est pas cense etre des animaux les mascottes?
+Une serviette volante!
+3
+1
+textures/mascotte.jpg

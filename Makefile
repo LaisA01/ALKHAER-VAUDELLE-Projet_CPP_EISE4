@@ -1,6 +1,6 @@
-OBJS	= main.o MCQ.o question.o TrueFalse.o game.o 
-SOURCE	= main.cpp MCQ.cpp question.cpp TrueFalse.cpp game.cpp 
-HEADER	= MCQ.h question.h TrueFalse.h game.h TimedMCQ.h button.hpp PhotoMCQ.h
+OBJS	= main.o game.o Textbox.o
+SOURCE	= main.cpp game.cpp Textbox.cpp
+HEADER	= MCQ.h question.h TrueFalse.h game.h TimedMCQ.h button.hpp PhotoMCQ.h Textbox.hpp textboxQuestion.h
 OUT	= quizz.out
 CC	 = g++
 FLAGS	 = -g -c
@@ -14,20 +14,14 @@ all: $(OBJS)
 main.o: main.cpp
 	$(CC) $(FLAGS) main.cpp 
 
-MCQ.o: MCQ.cpp
-	$(CC) $(FLAGS) MCQ.cpp 
-
-question.o: question.cpp
-	$(CC) $(FLAGS) question.cpp 
-
 TrueFalse.o: TrueFalse.cpp
 	$(CC) $(FLAGS) TrueFalse.cpp 
 
 game.o: game.cpp
 	$(CC) $(FLAGS) game.cpp 
 
-outils.o: outils.cpp
-	$(CC) $(FLAGS) outils.cpp 
+Textbox.o: Textbox.cpp
+	$(CC) $(FLAGS) Textbox.cpp 
 
 clean:
 	rm -f $(OBJS) $(OUT)

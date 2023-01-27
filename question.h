@@ -7,6 +7,7 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
+#include <list>
 
 using std::string; using std::pair; using std::vector;
 
@@ -25,11 +26,18 @@ public:
 
     }
 
-    string  get_text(void) { return _text;}
+    string  get_text(void) const { return _text;} 
     void set_text(string new_text) { _text = new_text;}
 
-    int  get_points(void) { return _points;}
+    int  get_points(void) const { return _points;}
     void set_points(int new_points) { _points = new_points;}
 
-    virtual int is_answer(int i) = 0;
+    virtual int is_answer(int i){return 0;} //très crade mais je peux pas la rendre virtuelle car la classe textboxQuestions peut pas avoir la même signature 
+    
+    virtual void operator=(const Question& q)
+    {
+        _points = q._points;
+        _text = q._text;
+    }
+
 };

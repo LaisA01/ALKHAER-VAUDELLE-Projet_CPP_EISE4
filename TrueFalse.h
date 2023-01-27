@@ -14,7 +14,6 @@ public:
     {
         _i_answer = i_answer;
     }
-    ~TrueFalse(); //à voir si on fait un destructor custom ou pas
 
     string get_answer(void)
     {

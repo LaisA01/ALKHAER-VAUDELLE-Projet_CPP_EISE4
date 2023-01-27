@@ -6,7 +6,6 @@
 #include <SFML/Audio.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Network.hpp>
-#include "TimedMCQ.h"
 #include "game.h"
 
 int main(void)
