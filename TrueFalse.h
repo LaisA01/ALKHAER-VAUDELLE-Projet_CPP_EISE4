@@ -30,4 +30,18 @@ public:
         if(i == _i_answer) return 1;
         else return 0;
     }
+
+    void operator = (const TrueFalse& TFQ)
+    {
+        set_text(TFQ.get_text());
+        set_points(TFQ.get_points());
+        _i_answer= TFQ._i_answer;
+    }
+
+    friend ostream& operator<<(ostream& os, const TrueFalse& tfq)
+    {
+        os << tfq.get_text() << '/' << "points: "<< tfq.get_points() << '/'<< "answer: " << tfq._i_answer << std::endl;
+        return os;
+    }
+
 };

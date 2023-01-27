@@ -3,9 +3,9 @@ SOURCE	= main.cpp game.cpp Textbox.cpp
 HEADER	= MCQ.h question.h TrueFalse.h game.h TimedMCQ.h button.hpp PhotoMCQ.h Textbox.hpp textboxQuestion.h
 OUT	= quizz.out
 CC	 = g++
-FLAGS	 = -g -c
+FLAGS	 = -g -c 
 LFLAGS	 = 
-SFML_LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio
+SFML_LIBS = -lsfml-system -lsfml-window -lsfml-graphics -lsfml-audio 
 
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS) $(SFML_LIBS)

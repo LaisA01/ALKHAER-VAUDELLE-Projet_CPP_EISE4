@@ -310,6 +310,7 @@ void Game::render()
 
 		case 1: // Si question TrueFalse
 		{
+			//std::cout<<*(TF_vector.back());
 			//on dessine deux boutons "vrai" ou "faux"
 			current_buttons_list[0].set_button_text("Faux");
 			current_buttons_list[1].set_button_text("Vrai");
@@ -333,7 +334,7 @@ void Game::render()
 					answer_is_correct == false; //on remet le flag a son par défaut
 					temp_text.setString("Votre reponse est correcte!");
 				}
-				temp_text.setPosition(sf::Vector2f(210, 150));
+				temp_text.setPosition(sf::Vector2f(175, 150));
 				this->window->clear(sf::Color(31,100,32, 125));
 				this->window->draw(temp_text);
 				this->window->display();
@@ -413,11 +414,12 @@ void Game::render()
 			string message("Merci d'avoir joue ! \nVotre score est de :\n");
 			message += to_string(score) + " sur 20 ";
 			goodbye_text.setString(message);
-			goodbye_text.setPosition(this->VM.width/4, this->VM.height/2);
+			goodbye_text.setPosition(250,100);
 			
 			this->window->draw(goodbye_text);
-
-
+			this->window->display();
+			sleep(3);
+			exit(0);
 
 		break;
 	}

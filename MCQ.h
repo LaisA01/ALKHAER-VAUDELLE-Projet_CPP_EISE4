@@ -39,4 +39,10 @@ public:
         set_points(qcm.get_points());
         set_i_answer(qcm.get_i_answer());
     }
+
+    friend ostream& operator<<(ostream& os, const MCQ& mcq)
+    {
+        os << mcq.get_text() << '/' << "points: "<< mcq.get_points() << '/'<< "answer: " << mcq._i_answer << std::endl;
+        return os;
+    }
 };

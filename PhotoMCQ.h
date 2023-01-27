@@ -45,4 +45,11 @@ public:
         set_texture(pqcm.get_texture());
     }
 
+    friend ostream& operator<<(ostream& os, const PhotoMCQ& pMCQ)
+    {
+        os << pMCQ.get_text() << '/' << "points: "<< pMCQ.get_points() << '/'<< "answer: " << pMCQ.get_i_answer()<< '/'<< "img_path: "<< pMCQ.get_texture_path() << std::endl;
+        return os;
+    }
+
+
 };

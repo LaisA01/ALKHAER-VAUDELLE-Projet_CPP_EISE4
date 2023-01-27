@@ -9,7 +9,7 @@
 #include <SFML/Network.hpp>
 #include <list>
 
-using std::string; using std::pair; using std::vector;
+using std::string, std::pair, std::vector, std::ostream;
 
 class Question
 {
@@ -34,10 +34,9 @@ public:
 
     virtual int is_answer(int i){return 0;} //très crade mais je peux pas la rendre virtuelle car la classe textboxQuestions peut pas avoir la même signature 
     
-    virtual void operator=(const Question& q)
+    virtual void operator=(const Question& q) //surcharge d'operateur d'affectation
     {
         _points = q._points;
         _text = q._text;
     }
-
 };

@@ -12,12 +12,18 @@
 /********** Public Methods **********/
 /********** -------------- **********/
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations" //pour arreter d'avoir des warning deprecated functions..
+
 
 Textbox::Textbox(sf::RenderWindow &windowToUse, sf::Font &fontToUse) : window(windowToUse), font(fontToUse) {
 	text = sf::Text("", font);
 	background.setFillColor(sf::Color::White);
 	text.setColor(sf::Color::Black);
 }
+
+#pragma GCC diagnostic pop
+
 
 void Textbox::draw() {
 	window.draw(background);

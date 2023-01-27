@@ -23,4 +23,17 @@ public:
         if(_answer_str == str) return 1;
         else return 0;
     }
+
+    void operator = (const textboxQuestion& TBQ)
+    {
+        set_text(TBQ.get_text());
+        set_points(TBQ.get_points());
+        _answer_str= TBQ._answer_str;
+    }
+
+    friend ostream& operator<<(ostream& os, const textboxQuestion& tbq)
+    {
+        os << tbq.get_text() << '/' << "points: "<< tbq.get_points() << '/'<< "answer: " << tbq._answer_str << std::endl;
+        return os;
+    }
 };
