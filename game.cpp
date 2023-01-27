@@ -247,7 +247,7 @@ void Game::render()
 	//message bienvenue:
 	sf::Font fnt;
 	fnt.loadFromFile("fonts/open-sans.ttf");
-	sf::Text welcome_text("Quizz coupe du monde! Pour jouer, appuyez sur le bouton Start.", fnt, 35);
+	sf::Text welcome_text("Quizz coupe du monde! Pour jouer, appuyez sur Start.", fnt, 35);
 	sf::Text goodbye_text(" ", fnt, 35);
 
 	//switch machine à états du jeu:
