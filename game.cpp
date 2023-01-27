@@ -411,7 +411,7 @@ void Game::render()
 
 	case END:
 			string message("Merci d'avoir joue ! \nVotre score est de :\n");
-			message += to_string(score) + "\n(ok on avoue on a attribue les points au pif";
+			message += to_string(score) + " sur 20 ";
 			goodbye_text.setString(message);
 			goodbye_text.setPosition(this->VM.width/4, this->VM.height/2);
 			
